@@ -1,0 +1,39 @@
+.Gallery{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.Gallery img{
+    width: 23%;
+    border-radius: 10px;
+}
+.button img {
+    width: 20px;
+    margin-left: 10px
+    
+}
+.button {
+    background:#212EA0;
+    color:white;
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: 0;
+    outline: 0;
+}
+.gallery-btn{
+    margin-top: 50px;
+    text-align: center;
+}
+@media (max-width: 800px) {
+    .Gallery {
+        flex-wrap:wrap
+    }
+
+    .Gallery img {
+        width: 48%;
+        margin-bottom: 25px;
+    }
+}
