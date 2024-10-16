@@ -20,6 +20,7 @@ function App() {
       <About/>
       <Title subtitle="Gallery" title="Campus Photo"/>
       <Gallery/>
+      
       <Title subtitle="TESTIMONIALS" title="What Student Says"/>
       <Testimonials></Testimonials>
       <Title subtitle="Contact Us" title="Get in Touch"/>
