@@ -11,29 +11,29 @@ function Program() {
   return (
     <div>
       <div className="programs">
-        <div className="program">
-          <img src={program1} alt="Program 1" />
-          <div className="caption">
-            <img src={programicon1} alt="Program Icon 1" />
-            <p>Graduation Degree</p>
+          <div className="program">
+            <img src={program1} alt="Program 1" />
+            <div className="caption">
+              <img src={programicon1} alt="Program Icon 1" />
+              <p>Graduation Degree</p>
+            </div>
           </div>
-        </div>
 
-        <div className="program">
-          <img src={program2} alt="Program 1" />
-          <div className="caption">
-            <img src={programicon2} alt="Program Icon 1" />
-            <p>Masters Degree</p>
+          <div className="program">
+            <img src={program2} alt="Program 1" />
+            <div className="caption">
+              <img src={programicon2} alt="Program Icon 1" />
+              <p>Masters Degree</p>
+            </div>
           </div>
-        </div>
 
-        <div className="program">
-          <img src={program3} alt="Program 1" />
-          <div className="caption">
-            <img src={programicon3} alt="Program Icon 1" />
-            <p>Post Graduation</p>
+          <div className="program">
+            <img src={program3} alt="Program 1" />
+            <div className="caption">
+              <img src={programicon3} alt="Program Icon 1" />
+              <p>Post Graduation</p>
+            </div>
           </div>
-        </div>
       </div>
     </div>
   );
