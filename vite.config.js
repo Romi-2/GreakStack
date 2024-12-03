@@ -1,8 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-console.log(import.meta.env.VITE_APP_ENV); // This should log 'development' or 'production'
+
+// Default to 'development' if VITE_APP_ENV is not defined
+const env = process.env.VITE_APP_ENV || 'development';
+console.log('Environment:', env);
 
 export default defineConfig({
   plugins: [react()],
-  base: import.meta.env.VITE_APP_ENV === 'production' ? '/GreakStack/' : '/', // Use import.meta.env
+  base: env === 'production' ? '/GreakStack/' : '/',
 });
