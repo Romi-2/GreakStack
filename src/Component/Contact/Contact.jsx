@@ -1,46 +1,54 @@
 import './Contact.css';
-import  { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha'; // Import ReCAPTCHA component
+import { useState } from 'react';
 import msg_icon from '../../assets/msg-icon.png';
 import mail_icon from '../../assets/mail-icon.png';
 import phone_icon from '../../assets/phone_icon.png';
 import location_icon from '../../assets/location-icon.png';
-import white_arrow from '../../assets/white_arrow.png';
 
 function Contact() {
   const [result, setResult] = useState("");
-  const [captchaToken, setCaptchaToken] = useState(null); // State for reCAPTCHA token
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (!captchaToken) {
-      setResult("Please complete the CAPTCHA");
-      return;
-    }
-
+    
+    setIsSubmitting(true);
     setResult("Sending....");
+
     const formData = new FormData(event.target);
-
     formData.append("access_key", "f48ab5fa-fc67-46be-b43b-e5c4dbcc5914");
-    formData.append("g-recaptcha-response", captchaToken); // Append CAPTCHA token to form data
 
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    }).then((res) => res.json());
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await res.json();
 
-    if (res.success) {
-      console.log("Success", res);
-      setResult(res.message);
-      setCaptchaToken(null); // Reset CAPTCHA token after successful submission
-    } else {
-      console.log("Error", res);
-      setResult(res.message);
+      if (data.success) {
+        console.log("Success", data);
+        setShowThankYou(true);
+        setResult("Message sent successfully!");
+        event.target.reset();
+        
+        setTimeout(() => {
+          setShowThankYou(false);
+          setResult("");
+        }, 5000);
+      } else {
+        console.log("Error", data);
+        setResult(data.message);
+        setTimeout(() => setResult(""), 4000);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setResult("Network error. Please try again.");
+      setTimeout(() => setResult(""), 4000);
+    } finally {
+      setIsSubmitting(false);
     }
-  };
-
-  const handleCaptchaChange = (token) => {
-    setCaptchaToken(token); // Update the token when CAPTCHA is completed
   };
 
   return (
@@ -68,28 +76,41 @@ function Contact() {
             </li>
           </ul>
         </div>
+        
         <form onSubmit={onSubmit}>
           <label>Your name</label>
           <input type="text" name='name' placeholder='Enter your name' required />
+          
           <label>Phone Number</label>
           <input type="tel" name='phone' placeholder='Enter your phone number' required />
+          
           <label>Your email</label>
           <input type="email" name='email' placeholder='Enter your email Id' required />
-          <label>Write your messages here</label>
-          <textarea name='textarea' rows='6' placeholder='Enter your message' required />
           
-          {/* reCAPTCHA Component */}
-          <ReCAPTCHA
-            sitekey="6LdONjAqAAAAAODLRhxRdnE9k3QC82qxWNZTYc1W" // Replace with your actual site key
-            onChange={handleCaptchaChange}
-          />
-
+          <label>Write your messages here</label>
+          <textarea name='message' rows='6' placeholder='Enter your message' required />
+          
           <div className='contact-btn'>
-            <button className="button" type="submit">submit<img src={white_arrow} alt="" /></button>
+            <button className="button" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+            </button>
           </div>
-          <span>{result}</span>
+          {result && <span className="result-message">{result}</span>}
         </form>
       </div>
+
+      {/* Thank You Popup */}
+      {showThankYou && (
+        <div className="thankyou-popup" onClick={() => setShowThankYou(false)}>
+          <div className="thankyou-popup-content" onClick={(e) => e.stopPropagation()}>
+            <div className="thankyou-icon">✓</div>
+            <h2>Thank You!</h2>
+            <p>Your message has been sent successfully.</p>
+            <p>We&#39ll get back to you within 24-48 hours.</p>
+            <button onClick={() => setShowThankYou(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
